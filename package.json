@@ -1,0 +1,14 @@
+{
+  "name": "node-mysql-instance",
+  "version": "1.2.0",
+  "description": "This is an instance of a nodejs service connecting to a mysql",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm install node-mysql"
+  },
+  "author": "ipenman",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
