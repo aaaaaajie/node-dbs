@@ -1,1 +1,1 @@
-# node-mysql-instance
+# see ./README_CN.md
