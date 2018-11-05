@@ -1,6 +1,13 @@
 {
   "name": "node-mysql-instance",
-  "version": "1.3.2",
+  "version": "1.6.1",
+  "keywords": [
+    "es6",
+    "promise",
+    "nodejs",
+    "mysql",
+    "logger"
+  ],
   "description": "This is an instance of a nodejs service connecting to a mysql",
   "main": "test.js",
   "scripts": {
