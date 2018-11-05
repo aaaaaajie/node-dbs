@@ -11,7 +11,7 @@
   "description": "This is an instance of a nodejs service connecting to a mysql",
   "main": "test.js",
   "scripts": {
-    "test": "npm install node-mysql"
+    "test": "npm install node-mysql-instance"
   },
   "author": "ipenman",
   "license": "ISC",
