@@ -9,7 +9,7 @@
     "logger"
   ],
   "description": "This is an instance of a nodejs service connecting to a mysql",
-  "main": "test.js",
+  "main": "index.js",
   "scripts": {
     "test": "npm install node-mysql-instance"
   },
