@@ -1,5 +1,5 @@
 {
-  "name": "node-mysql-instance",
+  "name": "mysql-instance",
   "version": "1.7.5",
   "keywords": [
     "es6",
@@ -18,5 +18,17 @@
   "dependencies": {
     "daily-logger": "^1.1.0",
     "mysql": "^2.16.0"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iPenManShip/node-mysql-instance.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iPenManShip/node-mysql-instance/issues"
+  },
+  "homepage": "https://github.com/iPenManShip/node-mysql-instance#readme"
 }
