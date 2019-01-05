@@ -1,6 +1,6 @@
 {
-  "name": "mysql-instance",
-  "version": "1.7.5",
+  "name": "node-mysql-instance",
+  "version": "1.7.7",
   "keywords": [
     "es6",
     "promise",
