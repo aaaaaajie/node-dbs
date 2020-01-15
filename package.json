@@ -1,7 +1,7 @@
 {
-  "name": "node-mysql",
+  "name": "dbc-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "Nodejs 数据库连接，（Nodejs Database Connectivity，简称nodedbc），支持多种数据库连接",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -9,8 +9,17 @@
   "scripts": {
     "test": "node ./test/Test.js && exit"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nodejs",
+    "mysql",
+    "mongodb",
+    "redis",
+    "database",
+    "es2015",
+    "es6",
+    "promise"
+  ],
+  "author": "ipenman",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^13.1.7",
