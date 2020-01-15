@@ -1,34 +1,20 @@
 {
-  "name": "node-mysql-instance",
-  "version": "1.7.7",
-  "keywords": [
-    "es6",
-    "promise",
-    "nodejs",
-    "mysql",
-    "logger"
-  ],
-  "description": "This is an instance of a nodejs service connecting to a mysql",
+  "name": "node-mysql",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "npm install node-mysql-instance"
-  },
-  "author": "ipenman",
-  "license": "ISC",
-  "dependencies": {
-    "daily-logger": "^1.1.0",
-    "mysql": "^2.16.0"
-  },
   "directories": {
     "lib": "lib"
   },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iPenManShip/node-mysql-instance.git"
+  "scripts": {
+    "test": "node ./test/Test.js && exit"
   },
-  "bugs": {
-    "url": "https://github.com/iPenManShip/node-mysql-instance/issues"
-  },
-  "homepage": "https://github.com/iPenManShip/node-mysql-instance#readme"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^13.1.7",
+    "mysql": "^2.17.1",
+    "tracer": "^1.0.2"
+  }
 }
