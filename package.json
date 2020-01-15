@@ -1,6 +1,6 @@
 {
   "name": "dbc-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Nodejs 数据库连接，（Nodejs Database Connectivity，简称nodedbc），支持多种数据库连接",
   "main": "index.js",
   "directories": {
@@ -21,6 +21,7 @@
   ],
   "author": "ipenman",
   "license": "ISC",
+  "homepage": "https://github.com/iPenManShip/dbc-node",
   "dependencies": {
     "@types/node": "^13.1.7",
     "mysql": "^2.17.1",
