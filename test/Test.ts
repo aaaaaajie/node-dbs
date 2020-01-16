@@ -1,13 +1,13 @@
 import { BaseDB, MysqlInterface, MySQLClient, DataType, InputDataType } from '../index'
 
 const Client: MysqlInterface = new MySQLClient({
-  host: 'rm-wz989c60z42kpw9s9ro.mysql.rds.aliyuncs.com',
-  user: 'root',
-  password: 'P@ssWord',
-  database: 'blog',
+  host: 'yourhost',
+  user: 'yourusername',
+  password: 'yourpassword',
+  database: 'youdatabase',
   multipleStatements: true
 })
-Client.findOne({ sql: 'SELECT * FROM user LIMIT 1' }).then(result => {
+Client.findOne({ sql: 'SELECT * FROM tb LIMIT 1' }).then(result => {
   console.log(result.data)
 })
 
