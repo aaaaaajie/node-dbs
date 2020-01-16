@@ -1,7 +1,7 @@
 ## Install
 
 ```sh
-$ npm install node-mysql-instance
+$ npm install node-dbs
 ```
 
 ## Description
@@ -13,7 +13,7 @@ $ npm install node-mysql-instance
 ### js
 
 ```js
-const { Mysql} = require('node-mysql-instance')
+const { MySQLClient} = require('node-dbs')
 
 const DBConf = {
     user: 'root',
@@ -22,9 +22,9 @@ const DBConf = {
     host: '127.0.0.1'
 };
 
-const client = new Mysql(DBConf);
+const client = new MySQLClient(DBConf);
 
-client.query("select * from tb")).then(result=>{
+client.query("select * from tb").then(result=>{
   console.log(result)
 })
 ```
@@ -32,7 +32,7 @@ client.query("select * from tb")).then(result=>{
 ### TS
 
 ```ts
-import { Mysql, DBInterface, DataType  } from 'node-mysql-instance'
+import { BaseDB, MysqlInterface, MySQLClient, DataType, InputDataType } from 'node-dbs'
 
 const DBConf = {
   user: 'root',
@@ -40,7 +40,7 @@ const DBConf = {
   database: 'db',
   host: '127.0.0.1'
 }
-const client: DBInterface = new Mysql(DBConf: object)
+const client: MysqlInterface = new MySQLClient(DBConf: object)
 client.query("select * from tb")).then(result=>{
   console.log(result)
 })
@@ -48,11 +48,8 @@ client.query("select * from tb")).then(result=>{
 
 ## API Docs
 
-**http://ndbc.ipenman.top**
+**http://node-dbs.ipenman.top**
 
 ## GitHub 链接地址
 
-```js
-
-[soundcode]: https://github.com/iPenManShip/node-mysql-instance
-```
+[Github](https://github.com/iPenManShip/node-dbs)

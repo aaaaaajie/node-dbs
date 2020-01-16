@@ -1,31 +1,31 @@
-// import MySQL from './lib/mysql'
-import { Mysql, DBInterface, DataType } from '../index'
+import { BaseDB, MysqlInterface, MySQLClient, DataType, InputDataType } from '../index'
 
-const Client: Mysql = new Mysql({
-  host: 'xxx',
+const Client: MysqlInterface = new MySQLClient({
+  host: 'rm-wz989c60z42kpw9s9ro.mysql.rds.aliyuncs.com',
   user: 'root',
-  password: 'xxx',
-  database: 'xxx',
+  password: 'P@ssWord',
+  database: 'blog',
   multipleStatements: true
 })
-Client.findOne('SELECT * FROM tb LIMIT 1').then(result => {
+Client.findOne({ sql: 'SELECT * FROM user LIMIT 1' }).then(result => {
   console.log(result.data)
 })
 
-class SqlServer implements DBInterface {
-  beginTransaction: () => Promise<DataType>
-  commitTransaction: (conn) => Promise<DataType>
-  concatCondition: (data: { sql: string; condition: Array<any>; params: object }) => string
-  delete: (sql: string, params: object, conn?) => Promise<DataType>
-  find: (sql: string, params: object, conn?) => Promise<DataType>
-  findByCondition: (data: { sql: string; condition: Array<any>; params?: object; order?: Array<any>; limit?: number }, conn?) => Promise<DataType>
-  findOne: (sql: string, params?: object, conn?) => Promise<DataType>
-  getFindByConditionData: () => object
-  insert: (sql: string, params: object, conn?) => Promise<DataType>
-  order: (str: string, item: { sort?; column?: string }, bl: boolean) => string
-  page: (sql: string, values: object, limit: number, conn?) => Promise<DataType>
-  query: (sql: string, params: object, conn?) => Promise<DataType>
-  rollbackTransaction: (conn) => Promise<DataType>
-  update: (sql: string, params: object, conn?) => Promise<DataType>
-  updateByCondition: (data: { sql: string; condition: Array<any>; params: object }, conn?) => Promise<DataType>
+// =======================扩展node-mongodb示例===============================
+interface MongoDBInterface {
+
+}
+
+class MongoDB extends BaseDB implements MongoDBInterface {
+  destroy (conn?: DataType): void {
+  }
+
+  execute (data: object): Promise<DataType> {
+    return undefined
+  }
+
+  getConnection (): Promise<DataType> {
+    return undefined
+  }
+
 }

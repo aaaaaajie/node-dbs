@@ -1,15 +1,7 @@
 import { DataType } from './IO_Data_interface'
+import { InputDataType } from './Input_Data_interface'
 
-interface BaseDBInterface {
-
-  /**
-   * 增删改查 Base function
-   * @param sql
-   * @param params
-   * @param conn
-   * @return Promise<DataType>
-   */
-  query: (sql: string, params: object, conn?) => Promise<DataType>;
+interface MysqlInterface {
 
   /**
    * 开启事务
@@ -38,7 +30,7 @@ interface BaseDBInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  findOne: (sql: string, params?: object, conn?) => Promise<DataType>;
+  findOne: (data: InputDataType) => Promise<DataType>;
 
   /**
    * 查询列表
@@ -47,7 +39,7 @@ interface BaseDBInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  find: (sql: string, params: object, conn?) => Promise<DataType>;
+  find: (data: { conn: any; limit: number; params: object; sql: string }) => Promise<DataType>;
 
   /**
    * 修改
@@ -56,7 +48,7 @@ interface BaseDBInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  update: (sql: string, params: object, conn?) => Promise<DataType>;
+  update: (data: InputDataType) => Promise<DataType>;
 
   /**
    * 插入
@@ -65,7 +57,7 @@ interface BaseDBInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  insert: (sql: string, params: object, conn?) => Promise<DataType>;
+  insert: (data: InputDataType) => Promise<DataType>;
 
   /**
    * 删除
@@ -74,7 +66,7 @@ interface BaseDBInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  delete: (sql: string, params: object, conn?) => Promise<DataType>;
+  delete: (data: InputDataType) => Promise<DataType>;
 
   /**
    * 分页
@@ -86,7 +78,7 @@ interface BaseDBInterface {
    * }
    * @return Promise<DataType>
    */
-  page: (sql: string, values: object, limit: number, conn?) => Promise<DataType>;
+  page: (data: InputDataType) => Promise<DataType>;
 
   /***************************
    ** 获取条件请求对象
@@ -113,21 +105,21 @@ interface BaseDBInterface {
    * @param data
    * @return string
    */
-  concatCondition: (data: { sql: string, condition: Array<any>, params: object }) => string
+  concatCondition: (data: { condition: Array<any>; params: object; sql: string }) => string
 
   /**
    * 按条件查询
    * @param data
    * @return Promise<DataType>
    */
-  findByCondition: (data: { sql: string, condition: Array<any>, params?: object, order?: Array<any>, limit?: number }, conn?) => Promise<DataType>
+  findByCondition: (data: InputDataType) => Promise<DataType>
 
   /**
    * 按条件修改
    * @param data
    * @return Promise<DataType>
    */
-  updateByCondition: (data: { sql: string, condition: Array<any>, params: object }, conn?) => Promise<DataType>
+  updateByCondition: (data: InputDataType) => Promise<DataType>
 }
 
-export default BaseDBInterface
+export default MysqlInterface

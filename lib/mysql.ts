@@ -1,37 +1,22 @@
 import * as MySQL from 'mysql'
 import Logger from './logger'
 import { DataType } from './IO_Data_interface'
-import BaseDBInterface from './db_interface'
+import { InputDataType } from './Input_Data_interface'
+import BaseDBInterface from './db_mysql_interface'
+import BaseDB from './db_base'
 
-class MySQLCli implements BaseDBInterface {
+class MySQLClient extends BaseDB implements BaseDBInterface {
 
-  private readonly DBConf: object
-
-  /**
-   * 构造函数
-   * @param DBConf
-   */
   constructor (DBConf: object) {
     if (!DBConf) throw Error('Please set up the database configuration!')
-    this.DBConf = DBConf
-    this.test().then()
+    super('mysql', DBConf)
   }
 
-  /** 测试连接 */
-  private async test () {
-    const oConn: DataType = await this.getConn()
-    if (oConn.hasError) {
-      Logger.write(oConn.message, 'error')
-      // console.error(oConn.message, 'error')
-      return
-    }
-    Logger.write('Database connection successful!')
-    oConn.data.destroy() // 删除此连接
-  }
-
-  /** 创建连接对象 */
-  private getConn () {
-    const pool = MySQL.createPool(this.DBConf)
+  /**
+   * 创建连接对象
+   */
+  getConnection (): Promise<DataType> {
+    const pool = MySQL.createPool(this.config)
     const oResult: DataType = { hasError: false, message: '', data: null }
     return new Promise<DataType>(resolve => {
       pool.getConnection((err: string, conn: any) => {
@@ -40,8 +25,7 @@ class MySQLCli implements BaseDBInterface {
           oResult.message = err
           return resolve(oResult)
         }
-
-        conn.config.queryFormat = function (query, values) {
+        conn.config.executeFormat = function (query, values) {
           if (!values) return query
           if (Array.isArray(values)) return MySQL.format(query, values)
           return query.replace(
@@ -58,26 +42,28 @@ class MySQLCli implements BaseDBInterface {
     })
   }
 
+  destroy (conn: DataType): void {
+    conn.data.destroy()
+  }
+
   /**
    * 增删改查 Base function
-   * @param sql
-   * @param params
-   * @param conn
    * @return Promise<oResult>
+   * @param data
    */
-  query (sql: string, params: object, conn?) {
+  execute (data: InputDataType): Promise<DataType> {
     return new Promise<DataType>(async resolve => {
       let Conn = null
-      if (conn) Conn = conn
+      if (data.conn) Conn = data.conn
       else {
-        const oConn: DataType = await this.getConn()
+        const oConn: DataType = await this.getConnection()
         if (oConn.hasError) return resolve(oConn)
         Conn = oConn.data
       }
 
-      Conn.query(sql, params, (err, result) => {
+      Conn.query(data.sql, data.params, (err, result) => {
         const oResult: DataType = { hasError: false, message: '', data: null }
-        const SQL = Conn.config.queryFormat(sql, params)
+        const SQL = Conn.config.executeFormat(data.sql, data.params)
         // console.log(SQL)
         if (err) {
           oResult.hasError = true
@@ -97,7 +83,7 @@ class MySQLCli implements BaseDBInterface {
    */
   beginTransaction (): Promise<DataType> {
     return new Promise(async resolve => {
-      const oConn: DataType = await this.getConn()
+      const oConn: DataType = await this.getConnection()
       if (oConn.hasError) return resolve(oConn)
       oConn.data.beginTransaction(err => {
         if (err) {
@@ -153,18 +139,16 @@ class MySQLCli implements BaseDBInterface {
 
   /**
    * 查询单项
-   * @param sql
-   * @param params
-   * @param conn
    * @return Promise<oResult>
+   * @param data
    */
-  async findOne (sql: string, params?: object, conn?) {
+  async findOne (data: InputDataType): Promise<DataType> {
     const oResult: DataType = { hasError: false, message: '', data: null }
-    const R: DataType = await this.query(sql, params, conn)
+    const R: DataType = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     if (!Array.isArray(R.data)) {
       oResult.hasError = true
-      oResult.message = 'Sorry, this function applies only to a single query！'
+      oResult.message = 'Sorry, this function applies only to a single execute！'
       return oResult
     }
     if (!R.data.length) {
@@ -177,18 +161,16 @@ class MySQLCli implements BaseDBInterface {
 
   /**
    * 查询列表
-   * @param sql
-   * @param params
-   * @param conn
    * @return Promise<oResult>
+   * @param data
    */
-  async find (sql: string, params: object, conn?): Promise<DataType> {
+  async find (data: InputDataType): Promise<DataType> {
     const oResult: DataType = { hasError: false, message: '', data: null }
-    const R = await this.query(sql, params, conn)
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     if (!Array.isArray(R.data)) {
       oResult.hasError = true
-      oResult.message = 'Sorry, this function only applies to the query list!'
+      oResult.message = 'Sorry, this function only applies to the execute list!'
       return oResult
     }
     oResult.data = R.data
@@ -197,14 +179,12 @@ class MySQLCli implements BaseDBInterface {
 
   /**
    * 修改
-   * @param sql
-   * @param params
-   * @param conn
    * @return Promise<oResult>
+   * @param data
    */
-  async update (sql: string, params: object, conn?): Promise<DataType> {
+  async update (data: InputDataType): Promise<DataType> {
     const oResult: DataType = { hasError: false, message: '', data: null }
-    const R = await this.query(sql, params, conn)
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     oResult.data = R.data.changedRows
     return oResult
@@ -212,14 +192,12 @@ class MySQLCli implements BaseDBInterface {
 
   /**
    * 插入
-   * @param sql
-   * @param params
-   * @param conn
    * @return Promise<oResult>
+   * @param data
    */
-  async insert (sql: string, params: object, conn?): Promise<DataType> {
+  async insert (data: InputDataType): Promise<DataType> {
     const oResult: DataType = { hasError: false, message: '', data: null }
-    const R = await this.query(sql, params, conn)
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     oResult.data = R.data.affectedRows
     return oResult
@@ -227,14 +205,12 @@ class MySQLCli implements BaseDBInterface {
 
   /**
    * 删除
-   * @param sql
-   * @param params
-   * @param conn
    * @return Promise<oResult>
+   * @param data
    */
-  async delete (sql: string, params: object, conn?): Promise<DataType> {
+  async delete (data: InputDataType): Promise<DataType> {
     const oResult: DataType = { hasError: false, message: '', data: null }
-    const R = await this.query(sql, params, conn)
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     oResult.data = R.data.affectedRows
     return oResult
@@ -242,23 +218,20 @@ class MySQLCli implements BaseDBInterface {
 
   /**
    * 分页
-   * @param sql
-   * @param values
-   * @param limit
-   * @param conn
    * values:{
    *   otherKey:otherVal,
    *   Limit:[0,5]
    * }
+   * @param data
    */
-  page (sql: string, values: object, limit: number, conn?): Promise<DataType> {
-    values = Object.assign(values, {
-      current: parseInt(limit[0]),
-      size: parseInt(limit[1])
+  async page (data: InputDataType): Promise<DataType> {
+    data.params = Object.assign(data.params, {
+      current: parseInt(data.limit[0]),
+      size: parseInt(data.limit[1])
     })
     // console.log(values)
-    sql = sql += ' LIMIT :current, :size'
-    return this.find(sql, values, conn)
+    data.sql = data.sql += ' LIMIT :current, :size'
+    return this.find({ sql: data.sql, params: data.params, limit: data.limit, conn: data.conn })
   }
 
   /***************************
@@ -298,7 +271,7 @@ class MySQLCli implements BaseDBInterface {
    * 拼接sql
    * @param {*} data
    */
-  concatCondition (data: { sql: string, condition: Array<any>, params: object }): string {
+  concatCondition (data: InputDataType): string {
     // 拼接where
     if (!data.sql) throw new Error('[DB MESSAGE]:Data.sql cannot be empty!')
     if (!Array.isArray(data.condition))
@@ -338,7 +311,7 @@ class MySQLCli implements BaseDBInterface {
    * 按条件查询
    * @param {*} data
    */
-  findByCondition (data: { sql: string, condition: Array<any>, params?: object, order?: Array<any>, limit?: number }, conn?): Promise<DataType> {
+  findByCondition (data: InputDataType): Promise<DataType> {
     let str = this.concatCondition({
       sql: data.sql,
       condition: data.condition,
@@ -353,19 +326,19 @@ class MySQLCli implements BaseDBInterface {
       })
     }
     if (Array.isArray(data.limit) && data.limit.length)
-      return this.page(str, data.params, data.limit, conn)
-    return this.find(str, data.params, conn)
+      return this.page({ sql: str, params: data.params, limit: data.limit, conn: data.conn })
+    return this.find({ sql: str, params: data.params, conn: data.conn })
   }
 
   /**
    * 按条件修改
    * @param {*} data
    */
-  updateByCondition (data: { sql: string, condition: Array<any>, params: object }, conn?): Promise<DataType> {
-    const oData = { sql: data.sql, condition: data.condition, params: {} }
+  updateByCondition (data: InputDataType): Promise<DataType> {
+    const oData: InputDataType = { sql: data.sql, condition: data.condition, params: {} }
     let str = this.concatCondition(oData)
-    return this.update(str, data.params, conn)
+    return this.update({ sql: str, params: data.params, conn: data.conn })
   }
 }
 
-export default MySQLCli
+export default MySQLClient

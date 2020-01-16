@@ -1,5 +1,7 @@
-import DBInterface from './lib/db_interface'
 import { DataType } from './lib/IO_Data_interface'
-import Mysql from './lib/mysql'
+import { InputDataType } from './lib/Input_Data_interface'
+import BaseDB from './lib/db_base'
+import MysqlInterface from './lib/db_mysql_interface'
+import MySQLClient from './lib/mysql'
 
-export { DBInterface, Mysql, DataType }
+export { DataType, InputDataType, BaseDB, MysqlInterface, MySQLClient }
