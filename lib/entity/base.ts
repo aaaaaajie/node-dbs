@@ -1,5 +1,5 @@
-import Logger from './logger'
-import { DataType } from './IO_Data_interface'
+import Logger from '../interface/logger'
+import { OutputDataType } from '../interface/datatype'
 
 /**
  * 数据库抽象类
@@ -30,7 +30,7 @@ abstract class BaseDB {
    * 测试连接
    */
   test (): void {
-    this.getConnection().then((conn: DataType) => {
+    this.getConnection().then((conn: OutputDataType) => {
       console.log(`${this._type} connection successful!`)
       Logger.write(`${this._type} connection successful!`)
       this.destroy(conn)
@@ -41,17 +41,17 @@ abstract class BaseDB {
    * 创建连接对象
    * @return Promise<object>
    */
-  abstract getConnection (): Promise<DataType>
+  abstract getConnection (): Promise<OutputDataType>
 
   /**
    * 销毁连接
    */
-  abstract destroy (conn?: DataType): void
+  abstract destroy (conn?: OutputDataType): void
 
   /**
    * 数据库操作
    */
-  abstract execute (data: object): Promise<DataType>
+  abstract execute (data: object): Promise<OutputDataType>
 }
 
 export default BaseDB

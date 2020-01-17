@@ -1,27 +1,6 @@
-import { DataType } from './IO_Data_interface'
-import { InputDataType } from './Input_Data_interface'
+import { InputDataType, OutputDataType } from './datatype'
 
-interface MysqlInterface {
-
-  /**
-   * 开启事务
-   * @return Promise<DataType>
-   */
-  beginTransaction: () => Promise<DataType>;
-
-  /**
-   * 事务回滚
-   * @param conn
-   * @return Promise<DataType>
-   */
-  rollbackTransaction: (conn) => Promise<DataType>;
-
-  /**
-   * 事务提交
-   * @param conn
-   * @return Promise<DataType>
-   */
-  commitTransaction: (conn) => Promise<DataType>;
+interface BaseInterface {
 
   /**
    * 查询单项
@@ -30,7 +9,7 @@ interface MysqlInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  findOne: (data: InputDataType) => Promise<DataType>;
+  findOne: (data: InputDataType) => Promise<OutputDataType>;
 
   /**
    * 查询列表
@@ -39,7 +18,7 @@ interface MysqlInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  find: (data: { conn: any; limit: number; params: object; sql: string }) => Promise<DataType>;
+  find: (data: InputDataType) => Promise<OutputDataType>;
 
   /**
    * 修改
@@ -48,7 +27,7 @@ interface MysqlInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  update: (data: InputDataType) => Promise<DataType>;
+  update: (data: InputDataType) => Promise<OutputDataType>;
 
   /**
    * 插入
@@ -57,7 +36,7 @@ interface MysqlInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  insert: (data: InputDataType) => Promise<DataType>;
+  insert: (data: InputDataType) => Promise<OutputDataType>;
 
   /**
    * 删除
@@ -66,7 +45,7 @@ interface MysqlInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  delete: (data: InputDataType) => Promise<DataType>;
+  delete: (data: InputDataType) => Promise<OutputDataType>;
 
   /**
    * 分页
@@ -78,7 +57,7 @@ interface MysqlInterface {
    * }
    * @return Promise<DataType>
    */
-  page: (data: InputDataType) => Promise<DataType>;
+  page: (data: InputDataType) => Promise<OutputDataType>;
 
   /***************************
    ** 获取条件请求对象
@@ -112,14 +91,14 @@ interface MysqlInterface {
    * @param data
    * @return Promise<DataType>
    */
-  findByCondition: (data: InputDataType) => Promise<DataType>
+  findByCondition: (data: InputDataType) => Promise<OutputDataType>
 
   /**
    * 按条件修改
    * @param data
    * @return Promise<DataType>
    */
-  updateByCondition: (data: InputDataType) => Promise<DataType>
+  updateByCondition: (data: InputDataType) => Promise<OutputDataType>
 }
 
-export default MysqlInterface
+export default BaseInterface

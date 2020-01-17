@@ -1,0 +1,3 @@
+2020-01-17T10:50:00+0800 <log> logger.js:11 (Object.write) mysql connection successful!
+2020-01-17T10:54:31+0800 <log> logger.js:11 (Object.write) mysql connection successful!
+2020-01-17T11:13:21+0800 <log> logger.js:11 (Object.write) mysql connection successful!

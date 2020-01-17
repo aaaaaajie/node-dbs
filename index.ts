@@ -1,7 +1,7 @@
-import { DataType } from './lib/IO_Data_interface'
-import { InputDataType } from './lib/Input_Data_interface'
-import BaseDB from './lib/db_base'
-import MysqlInterface from './lib/db_mysql_interface'
-import MySQLClient from './lib/mysql'
+import { InputDataType, OutputDataType } from './lib/interface/datatype'
+import BaseDB from './lib/entity/base'
+import BaseInterface from './lib/interface/base_db_interface'
+import MysqlInterface from './lib/interface/relation_db_interface'
+import MysqlClient from './lib/mysql'
 
-export { DataType, InputDataType, BaseDB, MysqlInterface, MySQLClient }
+export { InputDataType, OutputDataType, BaseDB, BaseInterface, MysqlInterface, MysqlClient }

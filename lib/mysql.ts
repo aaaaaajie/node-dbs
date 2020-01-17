@@ -1,9 +1,8 @@
 import * as MySQL from 'mysql'
-import Logger from './logger'
-import { DataType } from './IO_Data_interface'
-import { InputDataType } from './Input_Data_interface'
-import BaseDBInterface from './db_mysql_interface'
-import BaseDB from './db_base'
+import Logger from './interface/logger'
+import { InputDataType, OutputDataType } from './interface/datatype'
+import BaseDBInterface from './interface/relation_db_interface'
+import BaseDB from './entity/base'
 
 class MySQLClient extends BaseDB implements BaseDBInterface {
 
@@ -15,10 +14,10 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
   /**
    * 创建连接对象
    */
-  getConnection (): Promise<DataType> {
+  getConnection (): Promise<OutputDataType> {
     const pool = MySQL.createPool(this.config)
-    const oResult: DataType = { hasError: false, message: '', data: null }
-    return new Promise<DataType>(resolve => {
+    const oResult: OutputDataType = { hasError: false, message: '', data: null }
+    return new Promise<OutputDataType>(resolve => {
       pool.getConnection((err: string, conn: any) => {
         if (err) {
           oResult.hasError = true
@@ -42,7 +41,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
     })
   }
 
-  destroy (conn: DataType): void {
+  destroy (conn: OutputDataType): void {
     conn.data.destroy()
   }
 
@@ -51,18 +50,18 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  execute (data: InputDataType): Promise<DataType> {
-    return new Promise<DataType>(async resolve => {
+  execute (data: InputDataType): Promise<OutputDataType> {
+    return new Promise<OutputDataType>(async resolve => {
       let Conn = null
       if (data.conn) Conn = data.conn
       else {
-        const oConn: DataType = await this.getConnection()
+        const oConn: OutputDataType = await this.getConnection()
         if (oConn.hasError) return resolve(oConn)
         Conn = oConn.data
       }
 
       Conn.query(data.sql, data.params, (err, result) => {
-        const oResult: DataType = { hasError: false, message: '', data: null }
+        const oResult: OutputDataType = { hasError: false, message: '', data: null }
         const SQL = Conn.config.executeFormat(data.sql, data.params)
         // console.log(SQL)
         if (err) {
@@ -81,9 +80,9 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * 开启事务
    * @return Promise<oResult>
    */
-  beginTransaction (): Promise<DataType> {
+  beginTransaction (): Promise<OutputDataType> {
     return new Promise(async resolve => {
-      const oConn: DataType = await this.getConnection()
+      const oConn: OutputDataType = await this.getConnection()
       if (oConn.hasError) return resolve(oConn)
       oConn.data.beginTransaction(err => {
         if (err) {
@@ -101,7 +100,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @param conn
    * @return Promise<oResult>
    */
-  rollbackTransaction (conn): Promise<DataType> {
+  rollbackTransaction (conn): Promise<OutputDataType> {
     return new Promise(resolve => {
       if (!conn) return resolve()
       conn.rollback(() => {
@@ -117,8 +116,8 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    */
   commitTransaction (conn) {
-    return new Promise<DataType>(resolve => {
-      const oResult: DataType = { hasError: false, message: '', data: null }
+    return new Promise<OutputDataType>(resolve => {
+      const oResult: OutputDataType = { hasError: false, message: '', data: null }
       if (!conn) {
         oResult.hasError = true
         oResult.message = '无连接'
@@ -142,9 +141,9 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async findOne (data: InputDataType): Promise<DataType> {
-    const oResult: DataType = { hasError: false, message: '', data: null }
-    const R: DataType = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
+  async findOne (data: InputDataType): Promise<OutputDataType> {
+    const oResult: OutputDataType = { hasError: false, message: '', data: null }
+    const R: OutputDataType = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     if (!Array.isArray(R.data)) {
       oResult.hasError = true
@@ -164,8 +163,8 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async find (data: InputDataType): Promise<DataType> {
-    const oResult: DataType = { hasError: false, message: '', data: null }
+  async find (data: InputDataType): Promise<OutputDataType> {
+    const oResult: OutputDataType = { hasError: false, message: '', data: null }
     const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     if (!Array.isArray(R.data)) {
@@ -182,8 +181,8 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async update (data: InputDataType): Promise<DataType> {
-    const oResult: DataType = { hasError: false, message: '', data: null }
+  async update (data: InputDataType): Promise<OutputDataType> {
+    const oResult: OutputDataType = { hasError: false, message: '', data: null }
     const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     oResult.data = R.data.changedRows
@@ -195,8 +194,8 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async insert (data: InputDataType): Promise<DataType> {
-    const oResult: DataType = { hasError: false, message: '', data: null }
+  async insert (data: InputDataType): Promise<OutputDataType> {
+    const oResult: OutputDataType = { hasError: false, message: '', data: null }
     const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     oResult.data = R.data.affectedRows
@@ -208,8 +207,8 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async delete (data: InputDataType): Promise<DataType> {
-    const oResult: DataType = { hasError: false, message: '', data: null }
+  async delete (data: InputDataType): Promise<OutputDataType> {
+    const oResult: OutputDataType = { hasError: false, message: '', data: null }
     const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
     if (R.hasError) return R
     oResult.data = R.data.affectedRows
@@ -224,7 +223,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * }
    * @param data
    */
-  async page (data: InputDataType): Promise<DataType> {
+  async page (data: InputDataType): Promise<OutputDataType> {
     data.params = Object.assign(data.params, {
       current: parseInt(data.limit[0]),
       size: parseInt(data.limit[1])
@@ -311,7 +310,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * 按条件查询
    * @param {*} data
    */
-  findByCondition (data: InputDataType): Promise<DataType> {
+  findByCondition (data: InputDataType): Promise<OutputDataType> {
     let str = this.concatCondition({
       sql: data.sql,
       condition: data.condition,
@@ -334,7 +333,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * 按条件修改
    * @param {*} data
    */
-  updateByCondition (data: InputDataType): Promise<DataType> {
+  updateByCondition (data: InputDataType): Promise<OutputDataType> {
     const oData: InputDataType = { sql: data.sql, condition: data.condition, params: {} }
     let str = this.concatCondition(oData)
     return this.update({ sql: str, params: data.params, conn: data.conn })
