@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a163557d-09e5-4914-bacc-57173ccdea51" name="默认更改列表" comment="">
-      <change beforePath="$PROJECT_DIR$/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -42,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/lib/interface/relation_db_interface.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="253">
-              <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+              <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
               <folding>
                 <element signature="e#0#58#0" expanded="true" />
               </folding>
@@ -54,16 +54,16 @@
         <entry file="file://$PROJECT_DIR$/lib/interface/norelation_db_interface.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="43" lean-forward="true" selection-start-column="43" selection-end-column="43" />
+              <caret column="43" selection-start-column="43" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="1" column="5" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
+            <state relative-caret-position="46">
+              <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -72,7 +72,7 @@
         <entry file="file://$PROJECT_DIR$/lib/interface/base_db_interface.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="46">
-              <caret line="2" column="24" lean-forward="true" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
+              <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
               <folding>
                 <element signature="n#!!doc;n#findOne#0;n#!!block;n#MysqlInterface#0" />
                 <element signature="n#!!doc;n#find#0;n#!!block;n#MysqlInterface#0" />
@@ -185,7 +185,7 @@
         <entry file="file://$PROJECT_DIR$/test/Test.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="69">
-              <caret line="3" column="54" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="54" />
+              <caret line="3" column="54" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -195,11 +195,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.npmignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+            <state relative-caret-position="92">
+              <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -252,9 +252,9 @@
         <option value="$PROJECT_DIR$/lib/interface/relation_db_interface.ts" />
         <option value="$PROJECT_DIR$/lib/interface/norelation_db_interface.ts" />
         <option value="$PROJECT_DIR$/lib/mysql.ts" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/test/Test1.ts" />
         <option value="$PROJECT_DIR$/.npmignore" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -373,12 +373,12 @@
       <updated>1579152321581</updated>
       <workItem from="1579152323001" duration="10301000" />
       <workItem from="1579163019734" duration="2412000" />
-      <workItem from="1579225180460" duration="9504000" />
+      <workItem from="1579225180460" duration="9695000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22217000" />
+    <option name="totallyTimeSpent" value="22408000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -447,6 +447,7 @@
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/test/Test.js" />
         <option value="$PROJECT_DIR$/lib/interface/norelation_db_interface.js" />
+        <option value="$PROJECT_DIR$/test/Test1.js" />
       </list>
     </option>
   </component>
@@ -617,14 +618,14 @@
     <entry file="file://$PROJECT_DIR$/lib/interface/norelation_db_interface.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="43" lean-forward="true" selection-start-column="43" selection-end-column="43" />
+          <caret column="43" selection-start-column="43" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/interface/base_db_interface.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
-          <caret line="2" column="24" lean-forward="true" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
+          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
           <folding>
             <element signature="n#!!doc;n#findOne#0;n#!!block;n#MysqlInterface#0" />
             <element signature="n#!!doc;n#find#0;n#!!block;n#MysqlInterface#0" />
@@ -644,7 +645,7 @@
     <entry file="file://$PROJECT_DIR$/lib/interface/relation_db_interface.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
-          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
           <folding>
             <element signature="e#0#58#0" expanded="true" />
           </folding>
@@ -728,13 +729,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="1" column="5" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="138">
@@ -748,7 +742,7 @@
     <entry file="file://$PROJECT_DIR$/test/Test.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="69">
-          <caret line="3" column="54" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="54" />
+          <caret line="3" column="54" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="54" />
         </state>
       </provider>
     </entry>
@@ -757,8 +751,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.npmignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+        <state relative-caret-position="92">
+          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
         </state>
       </provider>
     </entry>
