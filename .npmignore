@@ -1,4 +1,5 @@
 .gitignore
-test.js
-test.ts
+.vscode
+.idea
+test
 node_modules

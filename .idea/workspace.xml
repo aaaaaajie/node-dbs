@@ -2,30 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a163557d-09e5-4914-bacc-57173ccdea51" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/interface/norelation_db_interface.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/interface/relation_db_interface.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/interface/relation_db_interface.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log/error.20200117.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log/log.20200117.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/IO_Data_interface.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/base_db_interface.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/IO_Data_interface.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Input_Data_interface.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/datatype.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Input_Data_interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/datatype.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/db_base.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/entity/base.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/db_base.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/entity/base.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/db_mysql_interface.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/norelation_db_interface.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/db_mysql_interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/base_db_interface.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/logger.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/logger.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/logger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/interface/logger.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/mysql.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/mysql.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/mysql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/mysql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Test.js" beforeDir="false" afterPath="$PROJECT_DIR$/test/Test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/Test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/.npmignore" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -82,7 +59,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="23">
@@ -109,15 +86,6 @@
                 <element signature="n#!!doc;n#findByCondition#0;n#!!block;n#MysqlInterface#0" />
                 <element signature="n#!!doc;n#updateByCondition#0;n#!!block;n#MysqlInterface#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/interface/datatype.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -216,17 +184,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/Test.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+            <state relative-caret-position="69">
+              <caret line="3" column="54" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="54" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/Test.js">
+        <entry file="file://$PROJECT_DIR$/test/Test1.ts">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.npmignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="4" column="15" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
+            <state relative-caret-position="69">
+              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -280,6 +253,8 @@
         <option value="$PROJECT_DIR$/lib/interface/norelation_db_interface.ts" />
         <option value="$PROJECT_DIR$/lib/mysql.ts" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/test/Test1.ts" />
+        <option value="$PROJECT_DIR$/.npmignore" />
       </list>
     </option>
   </component>
@@ -317,6 +292,11 @@
               <item name="node-dbs" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="interface" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="node-dbs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="node-dbs" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="node-dbs" type="b2602c69:ProjectViewProjectNode" />
@@ -393,12 +373,12 @@
       <updated>1579152321581</updated>
       <workItem from="1579152323001" duration="10301000" />
       <workItem from="1579163019734" duration="2412000" />
-      <workItem from="1579225180460" duration="9369000" />
+      <workItem from="1579225180460" duration="9504000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22082000" />
+    <option name="totallyTimeSpent" value="22217000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -634,23 +614,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="91" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/Test.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/interface/norelation_db_interface.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -769,6 +732,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
           <caret line="1" column="5" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="91" />
+          <folding>
+            <element signature="e#0#62#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/Test.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="54" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/Test1.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.npmignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
         </state>
       </provider>
     </entry>
