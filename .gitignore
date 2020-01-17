@@ -1,4 +1,5 @@
 .vscode
 .idea
 test
+log
 node_modules
