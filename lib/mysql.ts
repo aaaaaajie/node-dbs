@@ -24,7 +24,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
           oResult.message = err
           return resolve(oResult)
         }
-        conn.config.executeFormat = function (query, values) {
+        conn.config.queryFormat = function (query, values) {
           if (!values) return query
           if (Array.isArray(values)) return MySQL.format(query, values)
           return query.replace(
@@ -62,7 +62,7 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
 
       Conn.query(data.sql, data.params, (err, result) => {
         const oResult: OutputDataType = { hasError: false, message: '', data: null }
-        const SQL = Conn.config.executeFormat(data.sql, data.params)
+        const SQL = Conn.config.queryFormat(data.sql, data.params)
         // console.log(SQL)
         if (err) {
           oResult.hasError = true
