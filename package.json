@@ -1,8 +1,8 @@
 {
   "name": "node-dbs",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Nodejs 数据库连接，（Nodejs Database Connectivity，简称nodedbc），支持多种数据库连接",
-  "main": "./index.js",
+  "main": "./dist/index.js",
   "directories": {
     "lib": "lib"
   },

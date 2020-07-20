@@ -60,7 +60,7 @@ class MySQLClient extends base_1.default {
             Conn.query(data.sql, data.params, (err, result) => {
                 const oResult = { hasError: false, message: '', data: null };
                 const SQL = Conn.config.queryFormat(data.sql, data.params);
-                console.log(SQL)
+                // console.log(SQL)
                 if (err) {
                     oResult.hasError = true;
                     oResult.message = err;
