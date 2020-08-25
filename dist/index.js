@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MysqlClient = exports.BaseDB = void 0;
+exports.MongodbClient = exports.MysqlClient = exports.BaseDB = exports.OutputDataType = void 0;
+const datatype_1 = require("./src/interface/datatype");
+Object.defineProperty(exports, "OutputDataType", { enumerable: true, get: function () { return datatype_1.OutputDataType; } });
 const base_1 = require("./src/entity/base");
 exports.BaseDB = base_1.default;
 const mysql_1 = require("./src/mysql");
 exports.MysqlClient = mysql_1.default;
+const mongodb_1 = require("./src/mongodb");
+Object.defineProperty(exports, "MongodbClient", { enumerable: true, get: function () { return mongodb_1.MongodbClient; } });

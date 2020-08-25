@@ -1,22 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const MySQL = require("mysql");
+exports.MySQLClient = void 0;
 const logger_1 = require("./interface/logger");
+const datatype_1 = require("./interface/datatype");
 const base_1 = require("./entity/base");
+const mysql_1 = require("mysql");
 class MySQLClient extends base_1.default {
     constructor(DBConf) {
         if (!DBConf)
             throw Error('Please set up the database configuration!');
         super('mysql', DBConf);
+        this._pool = mysql_1.createPool(this.config);
     }
     /**
      * 创建连接对象
      */
     getConnection() {
-        const pool = MySQL.createPool(this.config);
-        const oResult = { hasError: false, message: '', data: null };
+        if (!this._pool)
+            this._pool = mysql_1.createPool(this.config);
+        const oResult = new datatype_1.OutputDataType();
         return new Promise(resolve => {
-            pool.getConnection((err, conn) => {
+            this._pool.getConnection((err, conn) => {
                 if (err) {
                     oResult.hasError = true;
                     oResult.message = err;
@@ -26,7 +30,7 @@ class MySQLClient extends base_1.default {
                     if (!values)
                         return query;
                     if (Array.isArray(values))
-                        return MySQL.format(query, values);
+                        return mysql_1.format(query, values);
                     return query.replace(/\:(\w+)/g, function (txt, key) {
                         if (values.hasOwnProperty(key))
                             return conn.escape(values[key]);
@@ -58,7 +62,7 @@ class MySQLClient extends base_1.default {
                 Conn = oConn.data;
             }
             Conn.query(data.sql, data.params, (err, result) => {
-                const oResult = { hasError: false, message: '', data: null };
+                const oResult = new datatype_1.OutputDataType();
                 const SQL = Conn.config.queryFormat(data.sql, data.params);
                 // console.log(SQL)
                 if (err) {
@@ -113,7 +117,7 @@ class MySQLClient extends base_1.default {
      */
     commitTransaction(conn) {
         return new Promise(resolve => {
-            const oResult = { hasError: false, message: '', data: null };
+            const oResult = new datatype_1.OutputDataType();
             if (!conn) {
                 oResult.hasError = true;
                 oResult.message = '无连接';
@@ -137,7 +141,7 @@ class MySQLClient extends base_1.default {
      * @param data
      */
     async findOne(data) {
-        const oResult = { hasError: false, message: '', data: null };
+        const oResult = new datatype_1.OutputDataType();
         const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
         if (R.hasError)
             return R;
@@ -159,7 +163,7 @@ class MySQLClient extends base_1.default {
      * @param data
      */
     async find(data) {
-        const oResult = { hasError: false, message: '', data: null };
+        const oResult = new datatype_1.OutputDataType();
         const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
         if (R.hasError)
             return R;
@@ -177,7 +181,7 @@ class MySQLClient extends base_1.default {
      * @param data
      */
     async update(data) {
-        const oResult = { hasError: false, message: '', data: null };
+        const oResult = new datatype_1.OutputDataType();
         const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
         if (R.hasError)
             return R;
@@ -190,7 +194,7 @@ class MySQLClient extends base_1.default {
      * @param data
      */
     async insert(data) {
-        const oResult = { hasError: false, message: '', data: null };
+        const oResult = new datatype_1.OutputDataType();
         const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
         if (R.hasError)
             return R;
@@ -203,7 +207,7 @@ class MySQLClient extends base_1.default {
      * @param data
      */
     async delete(data) {
-        const oResult = { hasError: false, message: '', data: null };
+        const oResult = new datatype_1.OutputDataType();
         const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
         if (R.hasError)
             return R;
@@ -332,4 +336,5 @@ class MySQLClient extends base_1.default {
         return this.update({ sql: str, params: data.params, conn: data.conn });
     }
 }
+exports.MySQLClient = MySQLClient;
 exports.default = MySQLClient;
