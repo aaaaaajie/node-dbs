@@ -1,48 +1,50 @@
-import * as MySQL from 'mysql'
-import Logger from './interface/logger'
-import { InputDataType, OutputDataType } from './interface/datatype'
-import BaseDBInterface from './interface/relation_db_interface'
-import BaseDB from './entity/base'
+import Logger from './interface/logger';
+import { MysqlQueryOptions, OutputDataType, DBConfig } from './interface/datatype';
+import RelationDBInterface from './interface/relation_db_interface';
+import BaseDB from './entity/base';
+import { Pool, createPool, PoolConnection, format } from "mysql";
 
-class MySQLClient extends BaseDB implements BaseDBInterface {
+class MySQLClient extends BaseDB implements RelationDBInterface {
 
-  constructor (DBConf: object) {
-    if (!DBConf) throw Error('Please set up the database configuration!')
-    super('mysql', DBConf)
+  private _pool: Pool;
+  constructor(DBConf: DBConfig) {
+    if (!DBConf) throw Error('Please set up the database configuration!');
+    super('mysql', DBConf);
+    this._pool = createPool(this.config);
   }
 
   /**
    * 创建连接对象
    */
-  getConnection (): Promise<OutputDataType> {
-    const pool = MySQL.createPool(this.config)
-    const oResult: OutputDataType = { hasError: false, message: '', data: null }
+  getConnection(): Promise<OutputDataType> {
+    if (!this._pool) this._pool = createPool(this.config);
+    const oResult = new OutputDataType();
     return new Promise<OutputDataType>(resolve => {
-      pool.getConnection((err: string, conn: any) => {
+      this._pool.getConnection((err, conn: PoolConnection) => {
         if (err) {
-          oResult.hasError = true
-          oResult.message = err
-          return resolve(oResult)
+          oResult.hasError = true;
+          oResult.message = err;
+          return resolve(oResult);
         }
         conn.config.queryFormat = function (query, values) {
-          if (!values) return query
-          if (Array.isArray(values)) return MySQL.format(query, values)
+          if (!values) return query;
+          if (Array.isArray(values)) return format(query, values);
           return query.replace(
             /\:(\w+)/g,
             function (txt, key) {
-              if (values.hasOwnProperty(key)) return conn.escape(values[key])
-              return txt
+              if (values.hasOwnProperty(key)) return conn.escape(values[key]);
+              return txt;
             }.bind(this)
-          )
-        }
-        oResult.data = conn
-        resolve(oResult)
-      })
-    })
+          );
+        };
+        oResult.data = conn;
+        resolve(oResult);
+      });
+    });
   }
 
-  destroy (conn: OutputDataType): void {
-    conn.data.destroy()
+  destroy(conn: OutputDataType): void {
+    conn.data.destroy();
   }
 
   /**
@@ -50,49 +52,49 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  execute (data: InputDataType): Promise<OutputDataType> {
+  execute(data: MysqlQueryOptions): Promise<OutputDataType> {
     return new Promise<OutputDataType>(async resolve => {
-      let Conn = null
-      if (data.conn) Conn = data.conn
+      let Conn = null;
+      if (data.conn) Conn = data.conn;
       else {
-        const oConn: OutputDataType = await this.getConnection()
-        if (oConn.hasError) return resolve(oConn)
-        Conn = oConn.data
+        const oConn: OutputDataType = await this.getConnection();
+        if (oConn.hasError) return resolve(oConn);
+        Conn = oConn.data;
       }
 
       Conn.query(data.sql, data.params, (err, result) => {
-        const oResult: OutputDataType = { hasError: false, message: '', data: null }
-        const SQL = Conn.config.queryFormat(data.sql, data.params)
+        const oResult = new OutputDataType();
+        const SQL = Conn.config.queryFormat(data.sql, data.params);
         // console.log(SQL)
         if (err) {
-          oResult.hasError = true
-          oResult.message = err
-          Logger.write(`[MESSAGE]:${err},\n[SQL]:${SQL}`, 'error')
-          return resolve(oResult)
+          oResult.hasError = true;
+          oResult.message = err;
+          Logger.write(`[MESSAGE]:${err},\n[SQL]:${SQL}`, 'error');
+          return resolve(oResult);
         }
-        oResult.data = result
-        return resolve(oResult)
-      })
-    })
+        oResult.data = result;
+        return resolve(oResult);
+      });
+    });
   }
 
   /**
    * 开启事务
    * @return Promise<oResult>
    */
-  beginTransaction (): Promise<OutputDataType> {
+  beginTransaction(): Promise<OutputDataType> {
     return new Promise(async resolve => {
-      const oConn: OutputDataType = await this.getConnection()
-      if (oConn.hasError) return resolve(oConn)
+      const oConn: OutputDataType = await this.getConnection();
+      if (oConn.hasError) return resolve(oConn);
       oConn.data.beginTransaction(err => {
         if (err) {
-          oConn.hasError = true
-          oConn.message = err
-          return resolve(oConn)
+          oConn.hasError = true;
+          oConn.message = err;
+          return resolve(oConn);
         }
-        return resolve(oConn)
-      })
-    })
+        return resolve(oConn);
+      });
+    });
   }
 
   /**
@@ -100,14 +102,14 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @param conn
    * @return Promise<oResult>
    */
-  rollbackTransaction (conn): Promise<OutputDataType> {
+  rollbackTransaction(conn): Promise<OutputDataType> {
     return new Promise(resolve => {
-      if (!conn) return resolve()
+      if (!conn) return resolve();
       conn.rollback(() => {
-        conn.release()
-        resolve()
-      })
-    })
+        conn.release();
+        resolve();
+      });
+    });
   }
 
   /**
@@ -115,25 +117,25 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @param conn
    * @return Promise<oResult>
    */
-  commitTransaction (conn) {
+  commitTransaction(conn) {
     return new Promise<OutputDataType>(resolve => {
-      const oResult: OutputDataType = { hasError: false, message: '', data: null }
+      const oResult = new OutputDataType();
       if (!conn) {
-        oResult.hasError = true
-        oResult.message = '无连接'
-        return resolve(oResult)
+        oResult.hasError = true;
+        oResult.message = '无连接';
+        return resolve(oResult);
       }
       conn.commit(async err => {
         if (err) {
-          oResult.hasError = true
-          oResult.message = err
-          await this.rollbackTransaction(conn)
-          return resolve(oResult)
+          oResult.hasError = true;
+          oResult.message = err;
+          await this.rollbackTransaction(conn);
+          return resolve(oResult);
         }
-        conn.release()
-        resolve(oResult)
-      })
-    })
+        conn.release();
+        resolve(oResult);
+      });
+    });
   }
 
   /**
@@ -141,21 +143,21 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async findOne (data: InputDataType): Promise<OutputDataType> {
-    const oResult: OutputDataType = { hasError: false, message: '', data: null }
-    const R: OutputDataType = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
-    if (R.hasError) return R
+  async findOne(data: MysqlQueryOptions): Promise<OutputDataType> {
+    const oResult = new OutputDataType();
+    const R: OutputDataType = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
+    if (R.hasError) return R;
     if (!Array.isArray(R.data)) {
-      oResult.hasError = true
-      oResult.message = 'Sorry, this function applies only to a single execute！'
-      return oResult
+      oResult.hasError = true;
+      oResult.message = 'Sorry, this function applies only to a single execute！';
+      return oResult;
     }
     if (!R.data.length) {
-      oResult.data = null
-      return oResult
+      oResult.data = null;
+      return oResult;
     }
-    oResult.data = R.data[0]
-    return oResult
+    oResult.data = R.data[0];
+    return oResult;
   }
 
   /**
@@ -163,17 +165,17 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async find (data: InputDataType): Promise<OutputDataType> {
-    const oResult: OutputDataType = { hasError: false, message: '', data: null }
-    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
-    if (R.hasError) return R
+  async find(data: MysqlQueryOptions): Promise<OutputDataType> {
+    const oResult = new OutputDataType();
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
+    if (R.hasError) return R;
     if (!Array.isArray(R.data)) {
-      oResult.hasError = true
-      oResult.message = 'Sorry, this function only applies to the execute list!'
-      return oResult
+      oResult.hasError = true;
+      oResult.message = 'Sorry, this function only applies to the execute list!';
+      return oResult;
     }
-    oResult.data = R.data
-    return oResult
+    oResult.data = R.data;
+    return oResult;
   }
 
   /**
@@ -181,12 +183,12 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async update (data: InputDataType): Promise<OutputDataType> {
-    const oResult: OutputDataType = { hasError: false, message: '', data: null }
-    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
-    if (R.hasError) return R
-    oResult.data = R.data.changedRows
-    return oResult
+  async update(data: MysqlQueryOptions): Promise<OutputDataType> {
+    const oResult = new OutputDataType();
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
+    if (R.hasError) return R;
+    oResult.data = R.data.changedRows;
+    return oResult;
   }
 
   /**
@@ -194,12 +196,12 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async insert (data: InputDataType): Promise<OutputDataType> {
-    const oResult: OutputDataType = { hasError: false, message: '', data: null }
-    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
-    if (R.hasError) return R
-    oResult.data = R.data.affectedRows
-    return oResult
+  async insert(data: MysqlQueryOptions): Promise<OutputDataType> {
+    const oResult = new OutputDataType();
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
+    if (R.hasError) return R;
+    oResult.data = R.data.affectedRows;
+    return oResult;
   }
 
   /**
@@ -207,12 +209,12 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async delete (data: InputDataType): Promise<OutputDataType> {
-    const oResult: OutputDataType = { hasError: false, message: '', data: null }
-    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn })
-    if (R.hasError) return R
-    oResult.data = R.data.affectedRows
-    return oResult
+  async delete(data: MysqlQueryOptions): Promise<OutputDataType> {
+    const oResult = new OutputDataType();
+    const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
+    if (R.hasError) return R;
+    oResult.data = R.data.affectedRows;
+    return oResult;
   }
 
   /**
@@ -223,14 +225,14 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * }
    * @param data
    */
-  async page (data: InputDataType): Promise<OutputDataType> {
+  async page(data: MysqlQueryOptions): Promise<OutputDataType> {
     data.params = Object.assign(data.params, {
       current: parseInt(data.limit[0]),
       size: parseInt(data.limit[1])
-    })
+    });
     // console.log(values)
-    data.sql = data.sql += ' LIMIT :current, :size'
-    return this.find({ sql: data.sql, params: data.params, limit: data.limit, conn: data.conn })
+    data.sql = data.sql += ' LIMIT :current, :size';
+    return this.find({ sql: data.sql, params: data.params, limit: data.limit, conn: data.conn });
   }
 
   /***************************
@@ -241,14 +243,14 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    ** rigthlike: like %str
    ** doublelike: like %str%
    ***************************/
-  getFindByConditionData () {
+  getFindByConditionData() {
     return {
       sql: '',
       params: {},
       condition: [],
       order: [],
       limit: []
-    }
+    };
   }
 
   /**
@@ -257,87 +259,87 @@ class MySQLClient extends BaseDB implements BaseDBInterface {
    * @param {*} item order对象
    * @param {*} bl 是否加order by关键字
    */
-  order (str: string, item: { sort?, column?: string }, bl: boolean): string {
-    item.sort = item.sort ? parseInt(item.sort) : 1
-    item.sort = item.sort === 1 ? 'ASC' : 'DESC'
+  order(str: string, item: { sort?, column?: string; }, bl: boolean): string {
+    item.sort = item.sort ? parseInt(item.sort) : 1;
+    item.sort = item.sort === 1 ? 'ASC' : 'DESC';
     bl
       ? (str += ` ORDER BY COALESCE(${item.column}) ${item.sort}`)
-      : (str += `, ${item.column} ${item.sort}`)
-    return str
+      : (str += `, ${item.column} ${item.sort}`);
+    return str;
   }
 
   /**
    * 拼接sql
    * @param {*} data
    */
-  concatCondition (data: InputDataType): string {
+  concatCondition(data: MysqlQueryOptions): string {
     // 拼接where
-    if (!data.sql) throw new Error('[DB MESSAGE]:Data.sql cannot be empty!')
+    if (!data.sql) throw new Error('[DB MESSAGE]:Data.sql cannot be empty!');
     if (!Array.isArray(data.condition))
-      throw new Error('[DB MESSAGE]:Data.condition must is Array!')
-    let str = data.sql
+      throw new Error('[DB MESSAGE]:Data.condition must is Array!');
+    let str = data.sql;
     // 拼接 WHERE
     if (data.condition.length) {
-      str += ' WHERE '
+      str += ' WHERE ';
       data.condition.forEach((obj, index) => {
-        obj.operator = obj.operator ? obj.operator.toLowerCase() : '='
-        obj.connector = obj.connector ? obj.connector : 'AND'
+        obj.operator = obj.operator ? obj.operator.toLowerCase() : '=';
+        obj.connector = obj.connector ? obj.connector : 'AND';
         switch (obj.operator) {
           case 'leftlike':
-            data.params[obj.column] = `%${data.params[obj.column]}`
-            obj.operator = 'LIKE'
-            break
+            data.params[obj.column] = `%${data.params[obj.column]}`;
+            obj.operator = 'LIKE';
+            break;
           case 'rightlike':
-            data.params[obj.column] = `${data.params[obj.column]}%`
-            obj.operator = 'LIKE'
-            break
+            data.params[obj.column] = `${data.params[obj.column]}%`;
+            obj.operator = 'LIKE';
+            break;
           case 'doublelike':
-            data.params[obj.column] = `%${data.params[obj.column]}%`
-            obj.operator = 'LIKE'
-            break
+            data.params[obj.column] = `%${data.params[obj.column]}%`;
+            obj.operator = 'LIKE';
+            break;
         }
         if (index === 0) {
-          str += ` (${obj.column} ${obj.operator} :${obj.column}) `
+          str += ` (${obj.column} ${obj.operator} :${obj.column}) `;
         } else {
-          str += ` ${obj.connector} (${obj.column} ${obj.operator} :${obj.column})`
+          str += ` ${obj.connector} (${obj.column} ${obj.operator} :${obj.column})`;
         }
-      })
+      });
     }
-    return str
+    return str;
   }
 
   /**
    * 按条件查询
    * @param {*} data
    */
-  findByCondition (data: InputDataType): Promise<OutputDataType> {
+  findByCondition(data: MysqlQueryOptions): Promise<OutputDataType> {
     let str = this.concatCondition({
       sql: data.sql,
       condition: data.condition,
       params: data.params
-    })
+    });
     // console.log(str);
     if (data.order && Array.isArray(data.order) && data.order.length) {
       data.order.forEach((item, index) => {
-        let bl = false
-        if (index === 0) bl = true
-        str = this.order(str, item, bl)
-      })
+        let bl = false;
+        if (index === 0) bl = true;
+        str = this.order(str, item, bl);
+      });
     }
     if (Array.isArray(data.limit) && data.limit.length)
-      return this.page({ sql: str, params: data.params, limit: data.limit, conn: data.conn })
-    return this.find({ sql: str, params: data.params, conn: data.conn })
+      return this.page({ sql: str, params: data.params, limit: data.limit, conn: data.conn });
+    return this.find({ sql: str, params: data.params, conn: data.conn });
   }
 
   /**
    * 按条件修改
    * @param {*} data
    */
-  updateByCondition (data: InputDataType): Promise<OutputDataType> {
-    const oData: InputDataType = { sql: data.sql, condition: data.condition, params: {} }
-    let str = this.concatCondition(oData)
-    return this.update({ sql: str, params: data.params, conn: data.conn })
+  updateByCondition(data: MysqlQueryOptions): Promise<OutputDataType> {
+    const oData: MysqlQueryOptions = { sql: data.sql, condition: data.condition, params: {} };
+    let str = this.concatCondition(oData);
+    return this.update({ sql: str, params: data.params, conn: data.conn });
   }
 }
-
-export default MySQLClient
+export { MySQLClient };
+export default MySQLClient;

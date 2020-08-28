@@ -1,4 +1,4 @@
-import { InputDataType, OutputDataType } from './datatype'
+import { QueryOptions, OutputDataType } from './datatype';
 
 interface BaseInterface {
 
@@ -9,7 +9,7 @@ interface BaseInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  findOne: (data: InputDataType) => Promise<OutputDataType>;
+  findOne: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 查询列表
@@ -18,7 +18,7 @@ interface BaseInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  find: (data: InputDataType) => Promise<OutputDataType>;
+  find: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 修改
@@ -27,7 +27,7 @@ interface BaseInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  update: (data: InputDataType) => Promise<OutputDataType>;
+  update: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 插入
@@ -36,7 +36,7 @@ interface BaseInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  insert: (data: InputDataType) => Promise<OutputDataType>;
+  insert: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 删除
@@ -45,7 +45,7 @@ interface BaseInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  delete: (data: InputDataType) => Promise<OutputDataType>;
+  delete: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 分页
@@ -57,7 +57,7 @@ interface BaseInterface {
    * }
    * @return Promise<DataType>
    */
-  page: (data: InputDataType) => Promise<OutputDataType>;
+  page: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /***************************
    ** 获取条件请求对象
@@ -68,7 +68,7 @@ interface BaseInterface {
    ** doublelike: like %str%
    ** @return object
    ***************************/
-  getFindByConditionData: () => object
+  getFindByConditionData: () => object;
 
   /**
    * 拼接order
@@ -77,28 +77,28 @@ interface BaseInterface {
    * @param bl 是否加order by关键字
    * @return string
    */
-  order: (str: string, item: { sort?, column?: string }, bl: boolean) => string
+  order: (str: string, item: { sort?, column?: string; }, bl: boolean) => string;
 
   /**
    * 拼接sql
    * @param data
    * @return string
    */
-  concatCondition: (data: { condition: Array<any>; params: object; sql: string }) => string
+  concatCondition: (data: { condition: Array<any>; params: object; sql: string; }) => string;
 
   /**
    * 按条件查询
    * @param data
    * @return Promise<DataType>
    */
-  findByCondition: (data: InputDataType) => Promise<OutputDataType>
+  findByCondition: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 按条件修改
    * @param data
    * @return Promise<DataType>
    */
-  updateByCondition: (data: InputDataType) => Promise<OutputDataType>
+  updateByCondition: (data: QueryOptions<any>) => Promise<OutputDataType>;
 }
 
-export default BaseInterface
+export default BaseInterface;
