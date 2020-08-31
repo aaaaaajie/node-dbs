@@ -1,4 +1,5 @@
-import { FilterQuery } from "mongodb";
+import { FilterQuery, ObjectId } from "mongodb";
+import { BaseEntity } from "../mongodb";
 
 interface oData {
   [propName: string]: any;
@@ -47,6 +48,16 @@ export interface MysqlQueryOptions extends RelationQueryOptions<any[]> {
 export interface MongodbQueryOptions extends NoRelationQueryOptions<FilterQuery<any>> {
   collectionName: string;
 }
+
+export interface InsertOptions {
+
+}
+export interface MongodbInsertOptions extends InsertOptions {
+  collectionName: string;
+  doc: BaseEntity | BaseEntity[];
+  _id?: ObjectId;
+}
+
 
 export interface DBConfig {
   host: string;

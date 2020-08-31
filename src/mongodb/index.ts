@@ -1,8 +1,9 @@
 import { MongoClient, connect, Db, Collection, Cursor } from "mongodb";
-import BaseDB from "./entity/base";
-import NoRelationDBInterface from "./interface/norelation_db_interface";
-import { OutputDataType, DBConfig, MongodbQueryOptions } from './interface/datatype';
-import { retResult } from "./utils";
+import BaseDB from "../entity/base";
+import NoRelationDBInterface from "../interface/norelation_db_interface";
+import { OutputDataType, DBConfig, MongodbQueryOptions, MongodbInsertOptions } from '../interface/datatype';
+import { retResult } from "../utils";
+import { BaseEntity } from "./base.entity";
 
 class MongodbClient extends BaseDB implements NoRelationDBInterface {
 
@@ -96,12 +97,17 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
         return Promise.resolve(new OutputDataType(false, "", "The function not please use other functions"));
     }
 
-    findOne: (data: MongodbQueryOptions) => Promise<OutputDataType>;
+    async findOne(data: MongodbQueryOptions): Promise<OutputDataType> {
+        return await retResult(this._db.collection(data.collectionName).findOne(data.condition));
+    };
     async find(data: MongodbQueryOptions): Promise<OutputDataType> {
         return await retResult(this._db.collection(data.collectionName).find(data.condition).toArray());
     }
     update: (data: MongodbQueryOptions) => Promise<OutputDataType>;
-    insert: (data: MongodbQueryOptions) => Promise<OutputDataType>;
+    async insert(data: MongodbInsertOptions): Promise<OutputDataType> {
+        if (Array.isArray(data)) return await retResult(this._db.collection(data.collectionName).insertMany(data.doc as []));
+        return await retResult(this._db.collection(data.collectionName).insertOne(data.doc));
+    };
     delete: (data: MongodbQueryOptions) => Promise<OutputDataType>;
     page: (data: MongodbQueryOptions) => Promise<OutputDataType>;
     getFindByConditionData: () => object;
@@ -110,5 +116,5 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
     findByCondition: (data: MongodbQueryOptions) => Promise<OutputDataType>;
     updateByCondition: (data: MongodbQueryOptions) => Promise<OutputDataType>;
 }
-export { MongodbClient };
+export { MongodbClient, BaseEntity };
 export default MongodbClient;

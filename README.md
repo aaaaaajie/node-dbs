@@ -6,27 +6,27 @@ $ npm install node-dbs
 
 ## Description
 
-目前支持的数据库 mysql 
+目前支持的数据库 mysql、mongodb
 
 ## Example usage
 
 ### js
 
 ```js
-const { MySQLClient} = require('node-dbs')
+const { MySQLClient } = require("node-dbs");
 
 const DBConf = {
-    user: 'root',
-    password: '123456',
-    database: 'db',
-    host: '127.0.0.1'
+  user: "root",
+  password: "123456",
+  database: "db",
+  host: "127.0.0.1",
 };
 
 const client = new MySQLClient(DBConf);
 
-client.query("select * from tb").then(result=>{
-  console.log(result)
-})
+client.query("select * from tb").then((result) => {
+  console.log(result);
+});
 ```
 
 ### TS

@@ -1,4 +1,4 @@
-import { QueryOptions, OutputDataType } from './datatype';
+import { QueryOptions, OutputDataType, insertOptions } from './datatype';
 
 interface BaseInterface {
 
@@ -36,7 +36,7 @@ interface BaseInterface {
    * @param conn
    * @return Promise<DataType>
    */
-  insert: (data: QueryOptions<any>) => Promise<OutputDataType>;
+  insert: (data: insertOptions) => Promise<OutputDataType>;
 
   /**
    * 删除
