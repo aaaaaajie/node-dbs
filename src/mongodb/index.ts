@@ -1,9 +1,10 @@
 import { MongoClient, connect, Db, Collection, Cursor } from "mongodb";
 import BaseDB from "../entity/base";
 import NoRelationDBInterface from "../interface/norelation_db_interface";
-import { OutputDataType, DBConfig, MongodbQueryOptions, MongodbInsertOptions } from '../interface/datatype';
+import { OutputDataType, DBConfig, UpdateOptions, DeleteOptions } from '../interface/datatype';
 import { retResult } from "../utils";
 import { BaseEntity } from "./base.entity";
+import { MongodbQueryOptions, MongodbInsertOptions } from "./interface";
 
 class MongodbClient extends BaseDB implements NoRelationDBInterface {
 
@@ -104,11 +105,28 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
         return await retResult(this._db.collection(data.collectionName).find(data.condition).toArray());
     }
     update: (data: MongodbQueryOptions) => Promise<OutputDataType>;
+    updateOne: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
+    updateMany: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
+
+    /**
+     * 插入，支持批量
+     * @param data 
+     */
     async insert(data: MongodbInsertOptions): Promise<OutputDataType> {
-        if (Array.isArray(data)) return await retResult(this._db.collection(data.collectionName).insertMany(data.doc as []));
-        return await retResult(this._db.collection(data.collectionName).insertOne(data.doc));
+        if (Array.isArray(data)) return await this.insertMany(data);
+        return this.insertOne(data);
     };
+    async insertOne(data: MongodbInsertOptions): Promise<OutputDataType> {
+        return await retResult(this._db.collection(data.collectionName).insertOne(data.doc));
+    }
+    async insertMany(data: MongodbInsertOptions) {
+        return await retResult(this._db.collection(data.collectionName).insertMany(data.doc as []));
+    }
     delete: (data: MongodbQueryOptions) => Promise<OutputDataType>;
+
+    deleteOne: (data: DeleteOptions<any>) => Promise<OutputDataType>;
+    deleteMany: (data: DeleteOptions<any>) => Promise<OutputDataType>;
+
     page: (data: MongodbQueryOptions) => Promise<OutputDataType>;
     getFindByConditionData: () => object;
     order: (str: string, item: { sort?: any; column?: string; }, bl: boolean) => string;

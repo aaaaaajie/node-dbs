@@ -1,4 +1,4 @@
-import { QueryOptions, OutputDataType, insertOptions } from './datatype';
+import { QueryOptions, OutputDataType, InsertOptions, UpdateOptions, DeleteOptions } from './datatype';
 
 interface BaseInterface {
 
@@ -7,7 +7,7 @@ interface BaseInterface {
    * @param sql
    * @param params
    * @param conn
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
   findOne: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
@@ -16,7 +16,7 @@ interface BaseInterface {
    * @param sql
    * @param params
    * @param conn
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
   find: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
@@ -25,27 +25,49 @@ interface BaseInterface {
    * @param sql
    * @param params
    * @param conn
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
-  update: (data: QueryOptions<any>) => Promise<OutputDataType>;
+  update: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
+
+  /**
+   * 插入单项
+   * @param data
+   * @return Promise<OutputDataType>
+   */
+  updateOne: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
+
+  /**
+   * 修改多条
+   * @param data
+   * @return Promise<OutputDataType>
+   */
+  updateMany: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
 
   /**
    * 插入
    * @param sql
    * @param params
    * @param conn
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
-  insert: (data: insertOptions) => Promise<OutputDataType>;
+  insert: (data: InsertOptions) => Promise<OutputDataType>;
 
   /**
    * 删除
-   * @param sql
-   * @param params
-   * @param conn
-   * @return Promise<DataType>
+   * @param data
+   * @return Promise<OutputDataType>
    */
   delete: (data: QueryOptions<any>) => Promise<OutputDataType>;
+
+
+  /**
+   * 删除单条
+   * @param data
+   * return Promise<OutputDataType>
+   */
+  deleteOne: (data: DeleteOptions<any>) => Promise<OutputDataType>;
+
+  deleteMany: (data: DeleteOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 分页
@@ -55,7 +77,7 @@ interface BaseInterface {
    *   otherKey:otherVal,
    *   Limit:[0,5]
    * }
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
   page: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
@@ -64,7 +86,7 @@ interface BaseInterface {
    ** 返回参数operator说明：
    ** = < > !=
    ** liftlike: like %str
-   ** rigthlike: like %str
+   ** rightlike: like %str
    ** doublelike: like %str%
    ** @return object
    ***************************/
@@ -89,16 +111,17 @@ interface BaseInterface {
   /**
    * 按条件查询
    * @param data
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
   findByCondition: (data: QueryOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 按条件修改
    * @param data
-   * @return Promise<DataType>
+   * @return Promise<OutputDataType>
    */
   updateByCondition: (data: QueryOptions<any>) => Promise<OutputDataType>;
 }
 
+export { BaseInterface };
 export default BaseInterface;

@@ -1,5 +1,3 @@
-import { FilterQuery, ObjectId } from "mongodb";
-import { BaseEntity } from "../mongodb";
 
 interface oData {
   [propName: string]: any;
@@ -29,6 +27,15 @@ export class OutputDataType {
 export interface QueryOptions<CT> {
   condition?: CT;
 }
+
+export interface DeleteOptions<CT> {
+  condition?: CT;
+}
+
+export interface UpdateOptions<CT, UT> {
+  condition?: CT;
+  update?: UT;
+}
 export interface RelationQueryOptions<CT> extends QueryOptions<CT> {
 
 }
@@ -37,27 +44,10 @@ export interface NoRelationQueryOptions<CT> extends QueryOptions<CT> {
 
 }
 
-export interface MysqlQueryOptions extends RelationQueryOptions<any[]> {
-  sql?: string;
-  params?: object;
-  limit?: number;
-  order?: Array<any>;
-  conn?: any;
-}
-
-export interface MongodbQueryOptions extends NoRelationQueryOptions<FilterQuery<any>> {
-  collectionName: string;
-}
 
 export interface InsertOptions {
 
 }
-export interface MongodbInsertOptions extends InsertOptions {
-  collectionName: string;
-  doc: BaseEntity | BaseEntity[];
-  _id?: ObjectId;
-}
-
 
 export interface DBConfig {
   host: string;

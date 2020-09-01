@@ -1,8 +1,9 @@
-import Logger from './interface/logger';
-import { MysqlQueryOptions, OutputDataType, DBConfig } from './interface/datatype';
-import RelationDBInterface from './interface/relation_db_interface';
-import BaseDB from './entity/base';
+import Logger from '../interface/logger';
+import { OutputDataType, DBConfig, UpdateOptions, DeleteOptions } from '../interface/datatype';
+import RelationDBInterface from '../interface/relation_db_interface';
+import BaseDB from '../entity/base';
 import { Pool, createPool, PoolConnection, format } from "mysql";
+import { MysqlQueryOptions } from "./interface";
 
 class MySQLClient extends BaseDB implements RelationDBInterface {
 
@@ -12,6 +13,10 @@ class MySQLClient extends BaseDB implements RelationDBInterface {
     super('mysql', DBConf);
     this._pool = createPool(this.config);
   }
+  updateOne: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
+  updateMany: (data: UpdateOptions<any, any>) => Promise<OutputDataType>;
+  deleteOne: (data: DeleteOptions<any>) => Promise<OutputDataType>;
+  deleteMany: (data: DeleteOptions<any>) => Promise<OutputDataType>;
 
   /**
    * 创建连接对象
