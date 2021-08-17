@@ -1,6 +1,7 @@
 .vscode
 .idea
 test
+dist
 log
 node_modules
 .DS_Store

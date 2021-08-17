@@ -99,7 +99,7 @@ interface BaseInterface {
    * @param bl 是否加order by关键字
    * @return string
    */
-  order: (str: string, item: { sort?, column?: string; }, bl: boolean) => string;
+  order: (str: string, item: { sort?: any[][], column?: string; }, bl: boolean) => string;
 
   /**
    * 拼接sql
