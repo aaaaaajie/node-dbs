@@ -61,10 +61,11 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
             database: DBConf.database,
             options: DBConf.options || {}
         });
-        this.getConnection().then((result) => {
-            const { data: client } = result;
+        return (async () => {
+            const { data: client } = await this.getConnection();
             this._db = client.db(this.config.database);
-        });
+            return this;
+        })() as unknown as MongodbClient;
     }
 
     private uriParseToObj(config: string): DBConfig {
