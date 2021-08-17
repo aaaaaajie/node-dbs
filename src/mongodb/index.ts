@@ -61,7 +61,10 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
             database: DBConf.database,
             options: DBConf.options || {}
         });
-        this.getConnection().then(() => { });
+        this.getConnection().then((result) => {
+            const { data: client } = result;
+            this._db = client.db(this.config.database);
+        });
     }
 
     private uriParseToObj(config: string): DBConfig {
@@ -80,14 +83,10 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
         return { uri, options };
     }
 
-    getConnection(): Promise<OutputDataType> {
-        const { uri, options } = this.objParseToUri(this.config);
-        return new Promise<OutputDataType>(resolve => {
-            MongoClient.connect(uri, { useUnifiedTopology: true }, (err, client: MongoClient) => {
-                if (err) throw err;
-                this._db = client.db(this.config.database);
-            });
-        });
+    async getConnection(): Promise<OutputDataType> {
+        const { uri } = this.objParseToUri(this.config);
+        const client = await MongoClient.connect(uri, { useUnifiedTopology: true });
+        return new OutputDataType(false, undefined, client);
     }
 
     destroy(conn?: OutputDataType): void {
@@ -134,5 +133,5 @@ class MongodbClient extends BaseDB implements NoRelationDBInterface {
     findByCondition: (data: MongodbQueryOptions) => Promise<OutputDataType>;
     updateByCondition: (data: MongodbQueryOptions) => Promise<OutputDataType>;
 }
-export { MongodbClient, BaseEntity };
+export { MongodbClient, BaseEntity, MongodbQueryOptions, MongodbInsertOptions };
 export default MongodbClient;

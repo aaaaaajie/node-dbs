@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "mocha test/Test.ts --require ts-node/register/transpile-only"
+    "test": "mocha test/mongodb.spec.ts --require ts-node/register/transpile-only"
   },
   "keywords": [
     "nodejs",
