@@ -3,7 +3,7 @@ import { OutputDataType, DBConfig, UpdateOptions, DeleteOptions } from '../inter
 import RelationDBInterface from '../interface/relation_db_interface';
 import BaseDB from '../entity/base';
 import { Pool, createPool, PoolConnection, format } from "mysql";
-import { MysqlQueryOptions } from "./interface";
+import { MysqlQueryOptions, MysqlInsertOptions } from "./interface";
 
 class MySQLClient extends BaseDB implements RelationDBInterface {
 
@@ -109,10 +109,10 @@ class MySQLClient extends BaseDB implements RelationDBInterface {
    */
   rollbackTransaction(conn): Promise<OutputDataType> {
     return new Promise(resolve => {
-      if (!conn) return resolve();
+      if (!conn) return resolve(null);
       conn.rollback(() => {
         conn.release();
-        resolve();
+        resolve(null);
       });
     });
   }
@@ -201,7 +201,7 @@ class MySQLClient extends BaseDB implements RelationDBInterface {
    * @return Promise<oResult>
    * @param data
    */
-  async insert(data: MysqlQueryOptions): Promise<OutputDataType> {
+  async insert(data: MysqlInsertOptions): Promise<OutputDataType> {
     const oResult = new OutputDataType();
     const R = await this.execute({ sql: data.sql, params: data.params, conn: data.conn });
     if (R.hasError) return R;

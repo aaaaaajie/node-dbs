@@ -44,6 +44,11 @@ export interface NoRelationQueryOptions<CT> extends QueryOptions<CT> {
 
 }
 
+export interface RelationInsertOptions extends InsertOptions {
+  sql: string;
+  params?: object;
+  conn?: any;
+}
 
 export interface InsertOptions {
 
