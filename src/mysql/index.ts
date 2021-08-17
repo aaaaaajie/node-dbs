@@ -70,7 +70,9 @@ class MySQLClient extends BaseDB implements RelationDBInterface {
       Conn.query(data.sql, data.params, (err, result) => {
         const oResult = new OutputDataType();
         const SQL = Conn.config.queryFormat(data.sql, data.params);
-        // console.log(SQL)
+        if (this._isPrintLog) {
+          Logger.write(`[SQL]:${SQL}`, "debug");
+        }
         if (err) {
           oResult.hasError = true;
           oResult.message = err;

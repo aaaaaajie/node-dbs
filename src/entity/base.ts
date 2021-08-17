@@ -12,9 +12,12 @@ abstract class BaseDB {
   /* 数据库配置 */
   private _config: DBConfig;
 
-  constructor(DBType: string, DBConf: DBConfig) {
+  protected _isPrintLog: boolean;
+
+  constructor(DBType: string, DBConf: DBConfig, isPrintLog: boolean = false) {
     this._type = DBType;
     this._config = DBConf;
+    this._isPrintLog = isPrintLog;
     this.test();
   }
 
@@ -32,7 +35,10 @@ abstract class BaseDB {
   test(): void {
     this.getConnection().then((conn: OutputDataType) => {
       console.log(`${this._type} connection successful!`);
-      Logger.write(`${this._type} connection successful!`);
+      if (this._isPrintLog) {
+        Logger.write(`${this._type} connection successful!`, "debug");
+      }
+
       this.destroy(conn);
     });
   }
