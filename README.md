@@ -45,11 +45,3 @@ client.query("select * from tb")).then(result=>{
   console.log(result)
 })
 ```
-
-## API Docs
-
-**http://node-dbs.ipenman.top**
-
-## GitHub 链接地址
-
-[Github](https://github.com/iPenManShip/node-dbs)
